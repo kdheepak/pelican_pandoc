@@ -7,6 +7,8 @@ import logging
 
 import pypandoc
 
+from . import pandoc_notebook
+
 logger = logging.getLogger(__name__)
 
 
@@ -25,7 +27,16 @@ class PandocReader(BaseReader):
         # Get content
         self.process_settings()
         content = pypandoc.convert_file(filename, to=self.output_format, extra_args=self.extra_args, filters=self.filters)
+
+        content = self.process_plugins(content)
+
         return content.encode('utf-8'), metadata
+
+    def process_plugins(content):
+
+        content = pandoc_notebook.notebook(content)
+
+        return content
 
     def read_metadata(self, path, format=None):
         metadata_json = pypandoc.convert_file(path, to='markdown', format=format,
@@ -42,6 +53,7 @@ class PandocReader(BaseReader):
         self.extra_args = self.settings.get('PANDOC_ARGS', [])
         self.filters = self.settings.get('PANDOC_EXTENSIONS', []) 
 
+
 def add_reader(readers):
     for ext in PandocReader.file_extensions:
         readers.reader_classes[ext] = PandocReader
@@ -49,3 +61,5 @@ def add_reader(readers):
 def register():
     logger.debug("Registering pandoc_reader plugin.")
     signals.readers_init.connect(add_reader)
+
+
