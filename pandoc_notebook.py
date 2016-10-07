@@ -35,6 +35,9 @@ and in your ``pelicanconf.py`` file, include the line:
 this will insert the appropriate CSS.  All efforts have been made to ensure
 that this CSS will not override formats within the blog theme, but there may
 still be some conflicts.
+
+Based on liquidtags plugin by @jakevdp
+
 """
 import warnings
 import re
@@ -239,9 +242,12 @@ def custom_highlighter(source, language='ipython', metadata=None):
 # Below is the pelican plugin code.
 #
 SYNTAX = "{% notebook /path/to/notebook.ipynb [ cells[start:end] ] [ language[language] ] %}"
-FORMAT = re.compile(r"""^(\s+)?(?P<src>\S+)(\s+)?((cells\[)(?P<start>-?[0-9]*):(?P<end>-?[0-9]*)(\]))?(\s+)?((language\[)(?P<language>-?[a-z0-9\+\-]*)(\]))?(\s+)?$""")
+
+# modified regex
+FORMAT = re.compile("{%\s?notebook\s(?P<src>\S+)(\s+)?((cells\[)(?P<start>-?[0-9]*):(?P<end>-?[0-9]*)(\]))?(\s+)?((language\[)(?P<language>-?[a-z0-9\+\-]*)(\]))?(\s+)?%}")
 
 
+# modified function signature
 def notebook(markup):
     match = FORMAT.search(markup)
     if match:
@@ -330,3 +336,4 @@ def notebook(markup):
 
     return body
 
+notebook.header_saved = False

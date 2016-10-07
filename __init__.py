@@ -32,7 +32,7 @@ class PandocReader(BaseReader):
 
         return content.encode('utf-8'), metadata
 
-    def process_plugins(content):
+    def process_plugins(self, content):
 
         content = pandoc_notebook.notebook(content)
 
