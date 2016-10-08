@@ -30,7 +30,7 @@ class PandocReader(BaseReader):
 
         content = self.process_plugins(content)
 
-        return content.encode('utf-8'), metadata
+        return content, metadata
 
     def process_plugins(self, content):
 
@@ -51,7 +51,7 @@ class PandocReader(BaseReader):
 
     def process_settings(self):
         self.extra_args = self.settings.get('PANDOC_ARGS', [])
-        self.filters = self.settings.get('PANDOC_EXTENSIONS', []) 
+        self.filters = self.settings.get('PANDOC_EXTENSIONS', [])
 
 
 def add_reader(readers):

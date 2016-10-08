@@ -257,8 +257,7 @@ def notebook(markup):
         end = argdict['end']
         language = argdict['language']
     else:
-        raise ValueError("Error processing input, "
-                         "expected syntax: {0}".format(SYNTAX))
+        return markup
 
     if start:
         start = int(start)
