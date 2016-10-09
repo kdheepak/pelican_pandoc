@@ -9,6 +9,7 @@ import pypandoc
 
 from . import pandoc_notebook
 from . import content_anchor
+from . import aside_wrapper
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,7 @@ class PandocReader(BaseReader):
 
         content = pandoc_notebook.notebook(content)
         content = content_anchor.process_content(content)
+        content = aside_wrapper.process_content(content)
 
         return content
 
