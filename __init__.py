@@ -8,6 +8,7 @@ import logging
 import pypandoc
 
 from . import pandoc_notebook
+from . import content_anchor
 
 logger = logging.getLogger(__name__)
 
@@ -35,11 +36,12 @@ class PandocReader(BaseReader):
     def process_plugins(self, content):
 
         content = pandoc_notebook.notebook(content)
+        content = content_anchor.process_content(content)
 
         return content
 
     def read_metadata(self, path, format=None):
-        metadata_json = pypandoc.convert_file(path, to='markdown', format=format,
+        metadata_json = pypandoc.convert_file(path, to=self.output_format, format=format,
                                      extra_args=['--template', self.METADATA_TEMPLATE])
 
         _metadata = json.loads(metadata_json)
