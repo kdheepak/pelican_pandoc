@@ -1,21 +1,24 @@
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup
 
 
 def process_content(content):
 
-    content = wrap_tag('aside', content)
-
-    return content
-
-
-def wrap_tag(tag, content):
     soup = BeautifulSoup(content, 'html.parser')
-    aside_tags = soup.findAll(tag)
-    for tag in aside_tags:
-        aside = Tag(soup, name=tag, attrs=tag.attrs)
-        div = Tag(soup, name='div', attrs={'id': 'div-{}'.format(tag.attrs['id'])})
-        div.contents = tag.contents
-        tag.replaceWith(aside)
-        div.insert(0, tag)
+
+    for aside_tag in soup.findAll('aside'):
+        tmp = dict(aside_tag.attrs)
+        try:
+            tmp['id'] = 'div-{}'.format(tmp['id'])
+        except:
+            pass
+        wrap(aside_tag, soup.new_tag("div", **tmp))
+
+    content = '\n'.join([unicode(i) for i in soup.contents])
     content = unicode(soup)
     return content
+
+
+def wrap(to_wrap, wrap_in):
+    contents = to_wrap.replace_with(wrap_in)
+    wrap_in.append(contents)
+
