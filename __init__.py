@@ -40,7 +40,7 @@ class PandocReader(BaseReader):
         content = pandoc_notebook.notebook(content)
         content = content_anchor.process_content(content)
         content = aside_wrapper.process_content(content)
-        content = footnotes_wrapper.process_content(content)
+        # content = footnotes_wrapper.process_content(content)
 
         return content
 

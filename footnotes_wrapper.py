@@ -5,7 +5,7 @@ def process_content(content):
 
     soup = BeautifulSoup(content, 'html.parser')
     section = soup.find(attrs={'class': 'footnotes'})
-    tag = BeautifulSoup('<h1 id=footnotes>Notes</h1>')
+    tag = BeautifulSoup('<h1 id=footnotes>Notes</h1>', 'html.parser')
     if section:
         section.insert(0, tag)
 
