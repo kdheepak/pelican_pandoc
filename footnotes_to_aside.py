@@ -20,6 +20,9 @@ def process_content(content):
                 a.parent.insert_after(tag)
                 a.replace_with(span)
 
+        if not footnotes.findAll('li'):
+            footnotes.extract()
+
     content = '\n'.join([unicode(i) for i in soup.contents])
     content = unicode(soup)
     return content
