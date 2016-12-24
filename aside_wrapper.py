@@ -13,8 +13,12 @@ def process_content(content):
             pass
         wrap(aside_tag, soup.new_tag("div", **tmp))
 
+    for i, s in enumerate(soup.findAll('sup')):
+        s.contents = [u'{}'.format(i)]
+
     content = '\n'.join([unicode(i) for i in soup.contents])
     content = unicode(soup)
+
     return content
 
 
