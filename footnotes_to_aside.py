@@ -23,6 +23,9 @@ def process_content(content):
         if not footnotes.findAll('li'):
             footnotes.extract()
 
+    for i, s in enumerate(soup.findAll('sup')):
+        s.contents[0].replaceWith(u'{}'.format(i + 1))
+
     content = '\n'.join([unicode(i) for i in soup.contents])
     content = unicode(soup)
     return content
